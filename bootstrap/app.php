@@ -27,6 +27,12 @@ $app->withFacades();
 
 $app->withEloquent();
 
+/**
+ * Register configuration files
+ */
+
+ $app->configure('services');
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
