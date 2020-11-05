@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Author;
 use App\Services\AuthorsService;
 use App\Traits\ApiResponser;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class AuthorController extends Controller
@@ -30,51 +30,51 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        
+        return $this->successResponse($this->authorsService->getAuthors());
     }
 
     /**
-     * Persist a newly created author in storage.
+     * Persist a newly created author using authors ai.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-     public function store(AuthorFormRequest $request)
+     public function store(Request $request)
     {
-            
+        return $this->successResponse($this->authorsService->createAuthor($request->all()), Response::HTTP_CREATED);
     }
 
     /**
-     * Display the specified resource.
+     * Fetch a single author from the authors api.
      *
-     * @param  \App\Author  $author
-     * @return \Illuminate\Http\Response
+     * @param  integer  $author     authotId
+     * @return string               jsontepresentation of fetched author or error
      */
-    public function show(Author $author)
+    public function show($author)
     {
-            
+        return $this->successResponse($this->authorsService->getAuthor($author));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified author via the authors api.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Author  $author
-     * @return \Illuminate\Http\Response
+     * @param  array  $author     field<name => fieldValue for each field that has changed
+     * @return string             jsonrepresentation of authos data or error
      */
-    public function update(AuthorFormRequest $request, Author $author)
+    public function update(Request $request, $author)
     {
-            
+        return $this->successResponse($this->authorsService->editAuthor($request->all() ,$author));
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified author using the authors api.
      *
-     * @param  \App\Author  $author
-     * @return \Illuminate\Http\Response
+     * @param  integer  $author     authorId
+     * @return string               json representation of the author that was deleted
      */
-    public function destroy(Author $author)
+    public function destroy($author)
     {
-            
+        return $this->successResponse($this->authorsService->deleteAuthor($author));
     }
 }
